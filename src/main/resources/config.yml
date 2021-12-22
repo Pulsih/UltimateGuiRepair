@@ -1,0 +1,73 @@
+########################################
+# +----------------------------------+ #
+# | UltimateGuiRepair made by Pulsi_ | #
+# +----------------------------------+ #
+########################################
+
+Settings:
+  # The main prefix of the plugin.
+  Prefix: "&8[&a&lU&c&lG&9&lR&8] "
+
+  # Pay attention to this:
+  # The repair cost works with a numerical operation,
+  # and it is: cost * damage (of the item), so
+  # if an item has 100 max durability and has 20 damage,
+  # the cost will be 20x20 -> 400
+  # It also supports decimals numbers.
+  Repair-Cost: 20
+
+  # To avoid players from repairing more items per time, enable this.
+  Singular-Repair: true
+
+  # The sound played when the item has been repaired.
+  Repair-Sound: "BLOCK_ANVIL_USE 5 1" # Sound Volume Pitch
+
+  # A cool effect that take the item in
+  # your hand and place it on the anvil.
+  Item-On-Anvil-Effect: true
+
+Gui:
+  # The title of the gui.
+  Title: "&a&lUltimate&c&lGui&9&lRepair"
+
+  # The lines of the gui ( max: 6 )
+  Lines: 3
+
+  # A cool feature to fill the gui with the selected item.
+  Gui-Filler:
+    # Enable or not this option.
+    Enabled: true
+
+    # The item options.
+    Material: "GRAY_STAINED_GLASS_PANE"
+    Displayname: "&f"
+    Glowing: false
+
+  Items:
+    Cancel:
+      Type: "NORMAL" # You can also remove that.
+      Material: "RED_WOOL"
+      Displayname: "&c&lCANCEL"
+      Lore:
+        - "&7Cancel and go back"
+      Slot: 12
+      Actions:
+        - "[CLOSE]"
+
+    Item-Displayer:
+      Type: "CUSTOM"
+      Custom-Item: "ITEM-DISPLAYER"
+      Slot: 14
+
+    Repair:
+      Type: "NORMAL"
+      Material: "GREEN_WOOL"
+      Displayname: "&a&lREPAIR"
+      Lore:
+        - "&7Repair this item."
+        - ""
+        - "&7Cost: &c$%cost_formatted%"
+      Slot: 16
+      Glowing: true
+      Actions:
+        - "[REPAIR]"

@@ -1,0 +1,8 @@
+# Messages file - v1.0
+
+NoPermission: "&cYou don't have the permission!"
+PluginReloaded: "&aPlugin successfully reloaded!"
+AlreadyRepaired: "&cYour item is already repaired!"
+InsufficientMoney: "&cYou don't have enough money! You need $%remaining_money_formatted% more money."
+SingularRepair: "&cYou can only repair 1 item per time!"
+SuccessfullyRepaired: "&aYou have successfully repaired your item for $%cost_formatted%!"

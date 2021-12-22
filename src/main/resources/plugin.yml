@@ -1,0 +1,8 @@
+name: UltimateGuiRepair
+version: '${version}'
+main: me.pulsi_.ultimateguirepair.UltimateGuiRepair
+api-version: 1.13
+authors: [ Pulsi_ ]
+commands:
+  ultimateguirepair:
+    aliases: [ugr]
