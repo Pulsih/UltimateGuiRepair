@@ -60,12 +60,11 @@ public class Methods {
 
     public static String format(double amount) {
         if (amount < 1000L) return formatString(amount);
-        if (amount >= 1000L && amount < 1000000L) return formatString(amount / 1000L) + "K";
-        if (amount >= 1000000L && amount < 1000000000L) return formatString(amount / 1000000L) + "M";
-        if (amount >= 1000000000L && amount < 1000000000000L) return formatString(amount / 1000000000L) + "B";
-        if (amount >= 1000000000000L && amount < 1000000000000000L) return formatString(amount / 1000000000000L) + "T";
-        if (amount >= 1000000000000000L && amount < 1000000000000000000L)
-            return formatString(amount / 1000000000000000L) + "Q";
+        if (amount < 1000000L) return formatString(amount / 1000L) + "K";
+        if (amount < 1000000000L) return formatString(amount / 1000000L) + "M";
+        if (amount < 1000000000000L) return formatString(amount / 1000000000L) + "B";
+        if (amount < 1000000000000000L) return formatString(amount / 1000000000000L) + "T";
+        if (amount < 1000000000000000000L) return formatString(amount / 1000000000000000L) + "Q";
         return "0";
     }
 
