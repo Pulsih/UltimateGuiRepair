@@ -3,31 +3,24 @@ package me.pulsi_.ultimateguirepair.utils;
 import me.pulsi_.ultimateguirepair.UltimateGuiRepair;
 import me.pulsi_.ultimateguirepair.configs.Values;
 import me.pulsi_.ultimateguirepair.managers.MessageManager;
+import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class Methods {
 
     public static void repair(ItemStack item, Player p) {
         if (item == null) return;
-
-        long itemDamage = item.getDurability();
         UltimateGuiRepair plugin = JavaPlugin.getPlugin(UltimateGuiRepair.class);
-
-        if (item.getAmount() > 1 && Values.CONFIG().isSingularRepair()) {
-            MessageManager.singularRepair(p);
-            return;
-        }
-
-        if (itemDamage < 1) {
-            MessageManager.alreadyRepaired(p);
-            return;
-        }
 
         double playerMoney = plugin.getEconomy().getBalance(p);
         double cost = getRepairCost(item);
@@ -37,25 +30,32 @@ public class Methods {
         }
 
         plugin.getEconomy().withdrawPlayer(p, cost);
-        if (MapUtils.hasItemQueued(p)) {
-            ItemStack itemOnAnvilRepaired = MapUtils.getPlayerItemQueued(p);
-            itemOnAnvilRepaired.setDurability((short) 0);
-            p.setItemInHand(itemOnAnvilRepaired);
+        item.setDurability((short) 0);
+        MapUtils.removeItemOnAnvil(p);
 
-            MapUtils.removeItemOnAnvil(p);
-            MapUtils.removeItemQueued(p);
-        } else {
-            item.setDurability((short) 0);
-        }
-        MessageManager.successfullyRepaired(p, cost);
         playSound(Values.CONFIG().getRepairSound(), p);
+        MessageManager.successfullyRepaired(p, cost);
         p.closeInventory();
     }
 
     public static double getRepairCost(ItemStack item) {
         if (item.getDurability() < 0) return 0;
+
+        double cost;
         long itemDamage = item.getDurability();
-        return (double) itemDamage * Values.CONFIG().getRepairCost();
+        if ("CONSTANT".equals(Values.CONFIG().getRepairType())) {
+            cost = Values.CONFIG().getRepairCost();
+        } else {
+            cost = (double) itemDamage * Values.CONFIG().getRepairCost();
+        }
+
+        if (Values.CONFIG().isEnchantIncreasePrice()) {
+            List<Enchantment> enchants = new ArrayList<>(item.getEnchantments().keySet());
+            for (int i = 0; i < enchants.size(); i++)
+                cost = cost + ((cost / 100) * Values.CONFIG().getEnchantPricePercentage());
+        }
+
+        return cost;
     }
 
     public static String format(double amount) {
@@ -83,7 +83,15 @@ public class Methods {
             int pitch = Integer.parseInt(pathSlitted[2]);
             p.playSound(p.getLocation(), Sound.valueOf(soundType), volume, pitch);
         } catch (NullPointerException | IllegalArgumentException exception) {
-            UGRLogger.logWarn("&8[&a&lUltimate&c&lGui&9&lRepair&8] &cCannot recognize \"" + sound + "\" as a minecraft sound.");
+            UGRLogger.logWarn("&cCannot recognize \"" + sound + "\" as a minecraft sound.");
         }
+    }
+
+    public static void fireItemAnimation(Player p, Location location) {
+        Item itemToRepair = p.getWorld().dropItem(location.add(0.500, 1, 0.500), p.getItemInHand());
+        itemToRepair.setVelocity(p.getLocation().getDirection().setX(0).setY(-1).setZ(0));
+        itemToRepair.setPickupDelay(999999999);
+
+        MapUtils.itemsOnAnvil.put(p.getName(), itemToRepair);
     }
 }

@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -40,12 +39,7 @@ public class GuiListener implements Listener {
                         break;
 
                     case "[REPAIR]":
-                        if (MapUtils.hasItemQueued(p)) {
-                            ItemStack itemOnAnvil = MapUtils.getPlayerItemQueued(p);
-                            Methods.repair(itemOnAnvil, p);
-                        } else {
-                            Methods.repair(p.getItemInHand(), p);
-                        }
+                        Methods.repair(p.getItemInHand(), p);
                         break;
                 }
             }
@@ -60,11 +54,6 @@ public class GuiListener implements Listener {
         if (!(e.getPlayer() instanceof Player)) return;
 
         Player p = (Player) e.getPlayer();
-        if (MapUtils.hasItemQueued(p)) {
-            p.setItemInHand(MapUtils.getPlayerItemQueued(p));
-            MapUtils.removeItemQueued(p);
-        }
-
         if (MapUtils.hasItemOnAnvil(p)) MapUtils.removeItemOnAnvil(p);
     }
 }

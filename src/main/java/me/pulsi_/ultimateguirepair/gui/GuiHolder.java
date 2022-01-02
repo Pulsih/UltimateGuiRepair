@@ -7,22 +7,21 @@ import me.pulsi_.ultimateguirepair.utils.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class GuiHolder implements InventoryHolder {
 
-    private final int lines;
     private final Inventory guiBank;
 
-    public GuiHolder(int lines, String title) {
-        this.lines = lines;
-        this.guiBank = Bukkit.createInventory(this, guiLines(lines), ChatUtils.color(title));
+    public GuiHolder(String title) {
+        this.guiBank = Bukkit.createInventory(this, InventoryType.HOPPER, ChatUtils.color(title));
     }
 
     public static GuiHolder getInstance() {
-        return new GuiHolder(Values.CONFIG().getGuiLines(), Values.CONFIG().getGuiTitle());
+        return new GuiHolder(Values.CONFIG().getGuiTitle());
     }
 
     public void openBank(Player p) {
@@ -44,26 +43,9 @@ public class GuiHolder implements InventoryHolder {
                 }
             }
             if (Values.CONFIG().isGuiFillerEnabled())
-                for (int i = 0; i < guiLines(lines); i++)
+                for (int i = 0; i < 4; i++)
                     if (guiBank.getItem(i) == null) guiBank.setItem(i, ItemUtils.guiFiller());
         });
-    }
-
-    private int guiLines(int number) {
-        switch (number) {
-            case 1:
-                return 9;
-            case 2:
-                return 18;
-            default:
-                return 27;
-            case 4:
-                return 36;
-            case 5:
-                return 45;
-            case 6:
-                return 54;
-        }
     }
 
     @Override

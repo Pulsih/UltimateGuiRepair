@@ -25,13 +25,7 @@ public class ItemUtils {
         String itemType = c.getString("Type");
         if (itemType != null && itemType.equals("CUSTOM")) {
             String customItemType = c.getString("Custom-Item");
-            if (customItemType.equals("ITEM-DISPLAYER")) {
-                if (MapUtils.hasItemQueued(p)) {
-                    return MapUtils.getPlayerItemQueued(p);
-                } else {
-                    return p.getItemInHand();
-                }
-            }
+            if (customItemType.equals("ITEM-DISPLAYER")) return p.getItemInHand();
         }
 
         String material = c.getString("Material");
@@ -124,17 +118,10 @@ public class ItemUtils {
         List<String> lore = new ArrayList<>();
 
         for (String lines : c.getStringList("Lore")) {
-            if (MapUtils.hasItemQueued(p)) {
-                lore.add(ChatUtils.color(lines
-                        .replace("%cost_formatted%", "" + Methods.format(Methods.getRepairCost(MapUtils.getPlayerItemQueued(p))))
-                        .replace("%cost%", "" + Methods.getRepairCost(MapUtils.getPlayerItemQueued(p)))
-                ));
-            } else {
-                lore.add(ChatUtils.color(lines
-                        .replace("%cost_formatted%", "" + Methods.format(Methods.getRepairCost(p.getItemInHand())))
-                        .replace("%cost%", "" + Methods.getRepairCost(p.getItemInHand()))
-                ));
-            }
+            lore.add(ChatUtils.color(lines
+                    .replace("%cost_formatted%", "" + Methods.format(Methods.getRepairCost(p.getItemInHand())))
+                    .replace("%cost%", "" + Methods.getRepairCost(p.getItemInHand()))
+            ));
         }
 
         if (isPlaceholderApiHooked) {

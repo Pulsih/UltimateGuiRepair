@@ -12,6 +12,7 @@ public class Messages {
     private static String singularRepair;
     private static String successfullyRepaired;
     private static String specifyPlayer;
+    private static String cannotRepair;
 
     public void loadValues() {
 
@@ -24,6 +25,7 @@ public class Messages {
         singularRepair = messages.getString("SingularRepair");
         successfullyRepaired = messages.getString("SuccessfullyRepaired");
         specifyPlayer = messages.getString("SpecifyPlayer");
+        cannotRepair = messages.getString("Cannot-Repair");
     }
 
     public String getNoPermission() {
@@ -52,5 +54,9 @@ public class Messages {
 
     public String getSpecifyPlayer() {
         return specifyPlayer;
+    }
+
+    public String getCannotRepair() {
+        return cannotRepair;
     }
 }

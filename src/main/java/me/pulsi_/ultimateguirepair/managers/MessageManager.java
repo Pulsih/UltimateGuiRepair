@@ -44,6 +44,11 @@ public class MessageManager {
         ));
     }
 
+    public static void cannotRepair(Player p) {
+        String message = Values.MESSAGES().getCannotRepair();
+        if (message != null) p.sendMessage(addPrefix(message));
+    }
+
     private static String addPrefix(String message) {
         String prefix = Values.CONFIG().getPrefix();
         if (prefix == null) return ChatUtils.color(message);

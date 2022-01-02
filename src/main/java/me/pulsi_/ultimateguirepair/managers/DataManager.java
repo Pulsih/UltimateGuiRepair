@@ -11,6 +11,7 @@ import me.pulsi_.ultimateguirepair.utils.ChatUtils;
 import me.pulsi_.ultimateguirepair.utils.MapUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DataManager {
@@ -48,10 +49,8 @@ public class DataManager {
         ChatUtils.consoleMessage("    &8[&a&lUltimate&c&lGui&9&lRepair&8] &cis shutting down...");
         ChatUtils.consoleMessage("");
 
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (MapUtils.hasItemQueued(p)) MapUtils.removeItemQueued(p);
+        for (Player p : Bukkit.getOnlinePlayers())
             if (MapUtils.hasItemOnAnvil(p)) MapUtils.removeItemOnAnvil(p);
-        }
     }
 
     public void reloadPlugin() {

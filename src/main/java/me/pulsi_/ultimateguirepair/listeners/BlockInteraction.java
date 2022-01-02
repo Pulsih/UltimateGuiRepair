@@ -2,10 +2,10 @@ package me.pulsi_.ultimateguirepair.listeners;
 
 import me.pulsi_.ultimateguirepair.configs.Values;
 import me.pulsi_.ultimateguirepair.gui.GuiHolder;
-import me.pulsi_.ultimateguirepair.utils.MapUtils;
+import me.pulsi_.ultimateguirepair.managers.MessageManager;
+import me.pulsi_.ultimateguirepair.utils.Methods;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -25,19 +25,24 @@ public class BlockInteraction implements Listener {
         e.setCancelled(true);
 
         Player p = e.getPlayer();
+        ItemStack item = p.getItemInHand();
+        if (item.getAmount() > 1 && Values.CONFIG().isSingularRepair()) {
+            MessageManager.singularRepair(p);
+            return;
+        }
+
+        if (item.getType().getMaxDurability() <= 0) {
+            MessageManager.cannotRepair(p);
+            return;
+        }
+
+        if (item.getDurability() < 1) {
+            MessageManager.alreadyRepaired(p);
+            return;
+        }
+
         GuiHolder.getInstance().openBank(p);
 
-        ItemStack handItem = p.getItemInHand();
-        if (!Values.CONFIG().isItemOnAnvilEffect() || handItem.getType() == Material.AIR) return;
-
-        Item itemToRepair = p.getWorld().dropItem(block.getLocation().add(0.500, 1, 0.500), handItem);
-        // Applying the velocity to make the item stay at his location once spawned.
-        itemToRepair.setVelocity(p.getLocation().getDirection().setX(0).setY(-1).setZ(0));
-        itemToRepair.setPickupDelay(999999999);
-
-        MapUtils.itemsOnAnvil.put(p.getName(), itemToRepair);
-        MapUtils.playerItems.put(p.getName(), handItem);
-
-        p.setItemInHand(null);
+        if (Values.CONFIG().isItemOnAnvilEffect() && item.getType() != Material.AIR) Methods.fireItemAnimation(p, block.getLocation());
     }
 }

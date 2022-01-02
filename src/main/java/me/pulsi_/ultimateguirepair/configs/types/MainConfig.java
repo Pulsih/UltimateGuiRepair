@@ -13,11 +13,13 @@ public class MainConfig {
     private static boolean guiFillerGlowing;
     private static ConfigurationSection guiItems;
     private static String guiTitle;
-    private static int guiLines;
     private static double repairCost;
+    private static String repairType;
     private static boolean singularRepair;
     private static String repairSound;
     private static boolean itemOnAnvilEffect;
+    private static boolean enchantIncreasePrice;
+    private static int enchantPricePercentage;
 
     public void loadValues() {
 
@@ -30,11 +32,13 @@ public class MainConfig {
         guiFillerGlowing = config.getBoolean("Gui.Gui-Filler.Glowing");
         guiItems = config.getConfigurationSection("Gui.Items");
         guiTitle = config.getString("Gui.Title");
-        guiLines = config.getInt("Gui.Lines");
-        repairCost = config.getDouble("Settings.Repair-Cost");
+        repairCost = config.getDouble("Settings.Repair-Cost.Cost");
+        repairType = config.getString("Settings.Repair-Cost.Type");
         singularRepair = config.getBoolean("Settings.Singular-Repair");
         repairSound = config.getString("Settings.Repair-Sound");
         itemOnAnvilEffect = config.getBoolean("Settings.Item-On-Anvil-Effect");
+        enchantIncreasePrice = config.getBoolean("Settings.Repair-Cost.Enchants.Increase-Cost");
+        enchantPricePercentage = config.getInt("Settings.Repair-Cost.Enchants.Percentage");
     }
 
     public String getPrefix() {
@@ -65,12 +69,12 @@ public class MainConfig {
         return guiTitle;
     }
 
-    public int getGuiLines() {
-        return guiLines;
-    }
-
     public double getRepairCost() {
         return repairCost;
+    }
+
+    public String getRepairType() {
+        return repairType;
     }
 
     public boolean isSingularRepair() {
@@ -83,5 +87,13 @@ public class MainConfig {
 
     public boolean isItemOnAnvilEffect() {
         return itemOnAnvilEffect;
+    }
+
+    public boolean isEnchantIncreasePrice() {
+        return enchantIncreasePrice;
+    }
+
+    public int getEnchantPricePercentage() {
+        return enchantPricePercentage;
     }
 }

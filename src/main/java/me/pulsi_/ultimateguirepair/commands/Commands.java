@@ -31,6 +31,7 @@ public class Commands implements CommandExecutor, TabCompleter {
             }
             s.sendMessage("&8[&a&lUltimate&c&lGui&9&lRepair&8] &7Running on v" + plugin.getDescription().getVersion() + ", made by Pulsi_");
             s.sendMessage(ChatUtils.color("&cYou do not have access to any sub-command."));
+            return false;
         }
 
         if (args[0].equalsIgnoreCase("reload")) {
